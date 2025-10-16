@@ -18,7 +18,6 @@
     <members>BV_CBVRSubmitter</members>
     <members>BV_CBVRSubmitter_Invocable</members>
     <members>BVInboundAPI</members>
-    <members>CBVR_SetExternalId</members>
     <name>ApexClass</name>
   </types>
 

@@ -3,7 +3,6 @@
     <fullName>Insurance_Information__c</fullName>
     <deleteConstraint>Restrict</deleteConstraint>
     <description>Insurance details</description>
-    <externalId>false</externalId>
     <label>Insurance Information</label>
     <referenceTo>MemberPlan</referenceTo>
     <relationshipLabel>CareBenefitVerifyRequests</relationshipLabel>

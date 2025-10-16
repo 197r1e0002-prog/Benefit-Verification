@@ -3,7 +3,6 @@
     <fullName>Provider_Information__c</fullName>
     <deleteConstraint>Restrict</deleteConstraint>
     <description>Provider Information</description>
-    <externalId>false</externalId>
     <label>Provider Information</label>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>CareBenefitVerifyRequests (Provider Information)</relationshipLabel>

@@ -14,16 +14,11 @@
         <inputParameters>
             <name>cbvrId</name>
             <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>responseBody</name>
-            <value>
-                <elementReference>Verify_Benefits.responseBody</elementReference>
+                <elementReference>Verify_Benefits.recordId</elementReference>
             </value>
         </inputParameters>
         <nameSegment>BV_ResponseParser_Invocable</nameSegment>
+        <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
@@ -44,6 +39,7 @@
             </value>
         </inputParameters>
         <nameSegment>BV_VerifyService</nameSegment>
+        <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>65.0</apiVersion>
@@ -79,7 +75,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>Results</name>
-            <fieldText>&lt;p&gt;Status: {!Verify_Benefits.statusCode}&lt;/p&gt;&lt;p&gt;Message: {!Verify_Benefits.error} {!Verify_Benefits.responseBody}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;--- Parsed Details ---&lt;/p&gt;&lt;p&gt;Plan Name: {!Parse_Verify_JSON.name}&lt;/p&gt;&lt;p&gt;Service Type: {!Parse_Verify_JSON.serviceType}&lt;/p&gt;&lt;p&gt;Service Date: {!Parse_Verify_JSON.serviceDate}&lt;/p&gt;&lt;p&gt;External Request Id: {!Parse_Verify_JSON.externalRequestId}&lt;/p&gt;&lt;p&gt;Request Id: {!Parse_Verify_JSON.requestId}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Status: {!Verify_Benefits.statusCode}&lt;/p&gt;&lt;p&gt;Message: {!Verify_Benefits.error}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;--- Parsed Details ---&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Plan Name: {!Parse_Verify_JSON.name}&lt;/p&gt;&lt;p&gt;Service Type: {!Parse_Verify_JSON.serviceType}&lt;/p&gt;&lt;p&gt;Service Date: {!Parse_Verify_JSON.serviceDate}&lt;/p&gt;&lt;p&gt;External Request Id: {!Parse_Verify_JSON.externalRequestId}&lt;/p&gt;&lt;p&gt;Request Id: {!Parse_Verify_JSON.requestId}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -92,7 +88,7 @@
             <targetReference>Verify_Benefits</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

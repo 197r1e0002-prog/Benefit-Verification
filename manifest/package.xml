@@ -1,24 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-  <!-- Code & runtime assets -->
-  <types><members>*</members><name>ApexClass</name></types>
-  <types><members>*</members><name>ApexTrigger</name></types>
-  <types><members>*</members><name>Flow</name></types>
-  <types><members>*</members><name>FlowDefinition</name></types>
-  <types><members>*</members><name>CustomLabels</name></types>
 
-  <!-- Data model -->
+  <!-- Apex Classes -->
+  <types>
+    <members>BV_VerifyService</members>
+    <members>BV_ResultsApiV1</members>
+    <members>BV_VerifyServiceTest</members>
+    <members>BV_ResultsApiV1AuthTest</members>
+    <members>BV_CBVRRoutingTriggerTest</members>
+    <members>BV_CBVRSubmitterTest</members>
+    <members>BV_Config</members>
+    <members>BV_CBVRQuickCreate</members>
+    <members>BV_CBVRBuilder</members>
+    <members>BV_Client</members>
+    <members>BV_ResponseParser_Invocable</members>
+    <members>BV_CBVRCreateorBatch</members>
+    <members>BV_CBVRSubmitter</members>
+    <members>BV_CBVRSubmitter_Invocable</members>
+    <members>BVInboundAPI</members>
+    <members>CBVR_SetExternalId</members>
+    <name>ApexClass</name>
+  </types>
+
+  <!-- Apex Triggers -->
+  <types>
+    <members>BV_CBVRRoutingTrigger</members>
+    <members>CBVR_SetExternalId</members>
+    <name>ApexTrigger</name>
+  </types>
+
+  <!-- Flows (API names) -->
+  <types>
+    <members>Mock_Callback_CBVR</members>
+    <members>CBVR_Populate_Fields_from_Lookups</members>
+    <members>Verify_Benefits_CBVR_UI</members>
+    <members>CBVR_AutoRoute_To_CareReps</members>
+    <members>Create_Benefit_Verification</members>
+    <name>Flow</name>
+  </types>
+
+  <!-- FlowDefinitions (keeps active-version linkage) -->
+  <types>
+    <members>Mock_Callback_CBVR</members>
+    <members>CBVR_Populate_Fields_from_Lookups</members>
+    <members>Verify_Benefits_CBVR_UI</members>
+    <members>CBVR_AutoRoute_To_CareReps</members>
+    <members>Create_Benefit_Verification</members>
+    <name>FlowDefinition</name>
+  </types>
+
+  <!-- Custom Objects -->
   <types>
     <members>CareBenefitVerifyRequest__c</members>
+    <members>Custom_Benefit__c</members>
     <members>CoverageBenefit__c</members>
     <name>CustomObject</name>
   </types>
 
-  <!-- Auth & config -->
-  <types><members>BV_Settings.Default</members><name>CustomMetadata</name></types>
-  <types><members>BV_API_Permissions</members><name>PermissionSet</name></types>
-  <types><members>BV_BenefitVerification</members><name>NamedCredential</name></types>
-  <types><members>BV_Basic_Auth</members><name>ExternalCredential</name></types>
+  <!-- Custom Metadata (record) -->
+  <types>
+    <members>BV_Settings.Default</members>
+    <name>CustomMetadata</name>
+  </types>
 
-  <version>59.0</version>
+  <!-- Credentials -->
+  <types>
+    <members>BV_BenefitVerification</members>
+    <name>NamedCredential</name>
+  </types>
+  <types>
+    <members>BV_Basic_Auth</members>
+    <members>InfinitusBV_EC</members>
+    <name>ExternalCredential</name>
+  </types>
+
+  <!-- Permission Sets -->
+  <types>
+    <members>InfinitusBV_Access</members>
+    <members>BV_API_Permissions</members>
+    <members>BV_Benefit_Verification_Access</members>
+    <name>PermissionSet</name>
+  </types>
+
+  <version>61.0</version>
 </Package>

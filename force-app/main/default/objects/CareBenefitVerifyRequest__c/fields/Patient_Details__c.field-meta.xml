@@ -3,7 +3,6 @@
     <fullName>Patient_Details__c</fullName>
     <deleteConstraint>Restrict</deleteConstraint>
     <description>Patient Deatils</description>
-    <externalId>false</externalId>
     <label>Patient Details</label>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>CareBenefitVerifyRequests</relationshipLabel>

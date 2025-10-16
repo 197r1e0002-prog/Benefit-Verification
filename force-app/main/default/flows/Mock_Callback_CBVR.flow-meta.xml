@@ -18,6 +18,7 @@
             </value>
         </inputParameters>
         <nameSegment>BV_CBVRSubmitter_Invocable</nameSegment>
+        <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>65.0</apiVersion>

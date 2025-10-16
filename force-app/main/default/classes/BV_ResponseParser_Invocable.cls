@@ -3,10 +3,10 @@ public with sharing class BV_ResponseParser_Invocable {
     /* What the flow sends in and what it gets back */
 
     public class Inp {
-        @InvocableVariable(required=true)
-        public String responseBody;     // The raw JSON returned by BV_Client.verify(..)
+        @InvocableVariable /* (required=false) */
+        public String responseBody;     // now optional
         @InvocableVariable
-        public Id cbvrId;               // Optional: use this CBVR Id to fill missing values
+        public Id cbvrId;
     }
 
     public class Out {

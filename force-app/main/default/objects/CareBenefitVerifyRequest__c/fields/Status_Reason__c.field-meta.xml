@@ -2,7 +2,6 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Status_Reason__c</fullName>
     <description>API messages / human notes</description>
-    <externalId>false</externalId>
     <label>Status Reason</label>
     <length>32768</length>
     <trackHistory>false</trackHistory>

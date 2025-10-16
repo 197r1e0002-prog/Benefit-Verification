@@ -1,6 +1,8 @@
-.sfdx/
-.sf/
-*.log
 .DS_Store
-**/profiles/**
-**/territory2Models/**
+.vscode/
+.sfdx/
+.cache/
+coverage/
+node_modules/
+.env
+*.log

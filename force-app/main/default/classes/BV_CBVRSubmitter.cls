@@ -68,7 +68,7 @@ public with sharing class BV_CBVRSubmitter {
         RestContext.response  = res;
 
         // Call the REST endpoint yourself (no extra wrappers) to test the full flow end-to-end.
-        CBV_ResultsApiV1.receive();
+        BV_ResultsApiV1.receive();
 
         SubmitResult out = new SubmitResult();
         out.statusCode = res.statusCode;

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Care_Representatives_CareBenefitVerifyRequest</fullName>
+    <columns>NAME</columns>
+    <filterScope>Queue</filterScope>
+    <label>Care Representatives</label>
+    <queue>Medical</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

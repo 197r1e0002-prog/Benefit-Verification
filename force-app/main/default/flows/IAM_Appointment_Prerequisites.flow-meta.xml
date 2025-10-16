@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <assignments>
+        <description>Sets accountId to the recordId.</description>
+        <name>SetAccountIdAsPatientAccountRecord</name>
+        <label>Set Account ID as Patient Account Record</label>
+        <locationX>402</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>accountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetAccount</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Sets isBookableWithPrereqMessage to False and sets failureMessage to the isNotBookableMessagePatientUnknown variable.</description>
+        <name>SetMessagetForFlowFailure</name>
+        <label>Set Message for Flow Failure</label>
+        <locationX>842</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>isBookableWithPrereqMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>failureMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>isNotBookableMessagePatientUnknown</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <description>Sets isBookableWithPrereqMessage to True and sets failureMessage to an empty string.</description>
+        <name>SetPrerequisiteMetMessageAge18To64</name>
+        <label>Set Prerequisite Met Message for Patients Age 18 to 64</label>
+        <locationX>314</locationX>
+        <locationY>1058</locationY>
+        <assignmentItems>
+            <assignToReference>isBookableWithPrereqMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>failureMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <description>Sets isBookableWithPrereqMessage to True and sets failureMessage to the isBookableMessagePatientAge65AndOver variable.</description>
+        <name>SetPrerequisiteMetMessageAge64AndOver</name>
+        <label>Set Prerequisite Met Message for Patients Age 64 and Over</label>
+        <locationX>50</locationX>
+        <locationY>1058</locationY>
+        <assignmentItems>
+            <assignToReference>isBookableWithPrereqMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>failureMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>isBookableMessagePatientAge65AndOver</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <description>Sets isBookableWithPrereqMessage to true and sets failureMessage to the isBookableMessagePatientAgeUnknown variable.</description>
+        <name>SetPrerequisiteMetMessageforUnknownBirthdate</name>
+        <label>Set Prerequisite Met Message for Unknown Birthdate</label>
+        <locationX>842</locationX>
+        <locationY>950</locationY>
+        <assignmentItems>
+            <assignToReference>isBookableWithPrereqMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>failureMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>isBookableMessagePatientAgeUnknown</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <description>Sets isBookableWithPrereqMessage to False and sets failureMessage to the isNotBookableMessagePatientAgeUnder18 variable.</description>
+        <name>SetPrerequisiteNotMetMessageUnderAge18</name>
+        <label>Set Prerequisite Not Met Message for Patients Under Age 18</label>
+        <locationX>578</locationX>
+        <locationY>1058</locationY>
+        <assignmentItems>
+            <assignToReference>isBookableWithPrereqMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>failureMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>isNotBookableMessagePatientAgeUnder18</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <description>Determines whether the account returned by GetAccount has a birthdate.</description>
+        <name>HasABirthdate</name>
+        <label>Has a Birthdate?</label>
+        <locationX>578</locationX>
+        <locationY>842</locationY>
+        <defaultConnector>
+            <targetReference>SetPrerequisiteMetMessageforUnknownBirthdate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No (Default)</defaultConnectorLabel>
+        <rules>
+            <name>HasBirthdate</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetAccount.PersonBirthdate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsWhatAge</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determines the age of the patient associated with the account.</description>
+        <name>IsWhatAge</name>
+        <label>Is What Age?</label>
+        <locationX>314</locationX>
+        <locationY>950</locationY>
+        <defaultConnector>
+            <targetReference>SetPrerequisiteNotMetMessageUnderAge18</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Under Age 18 (Default)</defaultConnectorLabel>
+        <rules>
+            <name>Age65OrOver</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PatientAgeFormula</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>64.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetPrerequisiteMetMessageAge64AndOver</targetReference>
+            </connector>
+            <label>Age 65 or Over</label>
+        </rules>
+        <rules>
+            <name>Age18To64</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PatientAgeFormula</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>18.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetPrerequisiteMetMessageAge18To64</targetReference>
+            </connector>
+            <label>Age 18 to 64</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determines whether the flow user ran the flow from a person account record.</description>
+        <name>WasFlowRunFromPersonAccountRecord</name>
+        <label>Was Flow Run From a Person Account Record?</label>
+        <locationX>578</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <targetReference>WasPatientSelected</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No (Default)</defaultConnectorLabel>
+        <rules>
+            <name>RunFromPersonAccountRecord</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>001</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetAccountIdAsPatientAccountRecord</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determines whether the flow user selected a patient.</description>
+        <name>WasPatientSelected</name>
+        <label>Was a Patient Selected?</label>
+        <locationX>754</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>SetMessagetForFlowFailure</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No (Default)</defaultConnectorLabel>
+        <rules>
+            <name>IsSelected</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>accountId</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetAccount</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>PatientAgeFormula</name>
+        <dataType>Number</dataType>
+        <expression>FLOOR((TODAY() - {!GetAccount.PersonBirthdate}) / 365.25)</expression>
+        <scale>0</scale>
+    </formulas>
+    <interviewLabel>IAM Appointment Prerequisites {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>IAM Appointment Prerequisites</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>Gets the account record for the patient with an ID that matches accountId and stores the result in the
+Account from GetAccount record variable.</description>
+        <name>GetAccount</name>
+        <label>Get Account</label>
+        <locationX>578</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>HasABirthdate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>accountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <sourceTemplate>healthcloud__CheckApptPrerequisites</sourceTemplate>
+    <start>
+        <locationX>452</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>WasFlowRunFromPersonAccountRecord</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Stores the ID of the patient’s account.</description>
+        <name>accountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>failureMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>Provider Recommended ages 18 and older, but may consider younger patients 16 years and older with parental consent.</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>You can continue but note that the patient is 65 or over, which exceeds the appointment prerequisite.</description>
+        <name>isBookableMessagePatientAge65AndOver</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>You can continue but note that the patient is 65 or over, which exceeds the appointment prerequisite.</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>We couldn’t verify the age of the patient.</description>
+        <name>isBookableMessagePatientAgeUnknown</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>We couldn’t verify the age of the patient.</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>isBookableWithPrereqMessage</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>The patient is ineligible for the appointment because they’re under 18.</description>
+        <name>isNotBookableMessagePatientAgeUnder18</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>The patient is ineligible for the appointment because they’re under 18. </stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Something went wrong. We couldn’t verify prerequisites because no patient was selected.</description>
+        <name>isNotBookableMessagePatientUnknown</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Something went wrong. We couldn’t verify prerequisites because no patient was selected.</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Stores the ID of the account that was passed into the flow.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Stores the ID of the user that was passed into the flow.</description>
+        <name>userId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

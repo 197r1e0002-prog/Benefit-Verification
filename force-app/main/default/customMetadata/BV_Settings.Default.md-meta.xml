@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default</label>
+    <protected>false</protected>
+    <values>
+        <field>Callback_Path__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>External_Credential_Name__c</field>
+        <value xsi:type="xsd:string">BV_Basic_Auth</value>
+    </values>
+    <values>
+        <field>Health_Check_Path__c</field>
+        <value xsi:type="xsd:string">/health</value>
+    </values>
+    <values>
+        <field>Named_Credential_Name__c</field>
+        <value xsi:type="xsd:string">BV_BenefitVerification</value>
+    </values>
+    <values>
+        <field>Retry_Limit__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>TimeoutMS__c</field>
+        <value xsi:type="xsd:double">10000.0</value>
+    </values>
+    <values>
+        <field>Use_External_Credential__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Verify_API_Path__c</field>
+        <value xsi:type="xsd:string">/benefit-verification-request</value>
+    </values>
+    <values>
+        <field>Webhook_Secret__c</field>
+        <value xsi:type="xsd:string">changeme_demo_secret</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,6 @@
+.sfdx/
+.sf/
+*.log
+.DS_Store
+**/profiles/**
+**/territory2Models/**

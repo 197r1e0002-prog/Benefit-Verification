@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <!-- Code & runtime assets -->
+  <types><members>*</members><name>ApexClass</name></types>
+  <types><members>*</members><name>ApexTrigger</name></types>
+  <types><members>*</members><name>Flow</name></types>
+  <types><members>*</members><name>FlowDefinition</name></types>
+  <types><members>*</members><name>CustomLabels</name></types>
+
+  <!-- Data model -->
+  <types>
+    <members>CareBenefitVerifyRequest__c</members>
+    <members>CoverageBenefit__c</members>
+    <name>CustomObject</name>
+  </types>
+
+  <!-- Auth & config -->
+  <types><members>BV_Settings.Default</members><name>CustomMetadata</name></types>
+  <types><members>BV_API_Permissions</members><name>PermissionSet</name></types>
+  <types><members>BV_BenefitVerification</members><name>NamedCredential</name></types>
+  <types><members>BV_Basic_Auth</members><name>ExternalCredential</name></types>
+
+  <version>59.0</version>
+</Package>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Provider_Information__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Provider Information</description>
+    <externalId>false</externalId>
+    <label>Provider Information</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>CareBenefitVerifyRequests (Provider Information)</relationshipLabel>
+    <relationshipName>CareBenefitVerifyRequests1</relationshipName>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

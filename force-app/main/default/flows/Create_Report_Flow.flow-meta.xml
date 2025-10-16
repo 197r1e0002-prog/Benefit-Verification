@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Calls an action that creates a report using data from records selected from search results and a specified context record.</description>
+        <name>Create_Report</name>
+        <label>Create Report</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <actionName>createReport</actionName>
+        <actionType>createReport</actionType>
+        <faultConnector>
+            <targetReference>SetErrorVariables</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>reportTemplateName</name>
+            <value>
+                <elementReference>ContentDocumentTitle</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>contextRecordId</name>
+            <value>
+                <elementReference>ContextRecordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordIds</name>
+            <value>
+                <elementReference>selectedSearchResultRecordIds</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>generatedReportName</name>
+            <value>
+                <elementReference>ReportName</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>createReport</nameSegment>
+        <outputParameters>
+            <assignToReference>message</assignToReference>
+            <name>message</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>linkText</assignToReference>
+            <name>linkLabel</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>linkUrl</assignToReference>
+            <name>linkUrl</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>61.0</apiVersion>
+    <assignments>
+        <description>Sets isSuccesss to False and message to FaultMessage.</description>
+        <name>SetErrorVariables</name>
+        <label>Set Error Variables</label>
+        <locationX>440</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>message</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>IsSuccess</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <constants>
+        <description>Stores the title of the content document that’s used as a template for the report.</description>
+        <name>ContentDocumentTitle</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </constants>
+    <environments>Default</environments>
+    <interviewLabel>Create Report Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Create Report Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>DefaultMode</runInMode>
+    <sourceTemplate>cbsf_flows__CreateReport</sourceTemplate>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Report</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Stores the ID of the record to provide context for the search result records the report is created for.</description>
+        <name>ContextRecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores a Boolean value that indicates whether the flow was ended due to an error.</description>
+        <name>IsSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Stores the URL for the link text in the message indicating whether the report completed successfully or not.</description>
+        <name>linkText</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the URL for the link text in the message indicating whether the report completed successfully or not.</description>
+        <name>linkUrl</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the output error message when the flow encounters an error.</description>
+        <name>message</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Stores the name of the report to create. If left blank, SearchResultsReport_&lt;DateTime&gt; is used.</description>
+        <name>ReportName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores a collection of record IDs selected from the search results that contain the data to use to create the report, and is available for output from the flow.</description>
+        <name>selectedSearchResultRecordIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

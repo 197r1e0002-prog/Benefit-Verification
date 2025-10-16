@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>HomeHealth: Invocable Action to update the visits that are affected when a care professional goes on leave.</description>
+        <name>Handle_Res_Absence</name>
+        <label>Handle Resource Absence</label>
+        <locationX>308</locationX>
+        <locationY>276</locationY>
+        <actionName>handleResourceAbsence</actionName>
+        <actionType>handleResourceAbsence</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>serviceResourceId</name>
+            <value>
+                <elementReference>$Record.Resource.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>startDateTime</name>
+            <value>
+                <elementReference>$Record.Start</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>endDateTime</name>
+            <value>
+                <elementReference>$Record.End</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>newServiceAppointmentStatus</name>
+            <value>
+                <stringValue>Review</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>handleResourceAbsence</nameSegment>
+    </actionCalls>
+    <apiVersion>60.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>Update Visits for Care Professional Absense {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Visits for Care Professional Absense</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <sourceTemplate>homehealth_flows__HandleResAbsence</sourceTemplate>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <object>ResourceAbsence</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>Handle_Res_Absence</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

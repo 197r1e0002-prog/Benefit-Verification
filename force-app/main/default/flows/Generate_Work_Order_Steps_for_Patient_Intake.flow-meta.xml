@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Calls an action to create the third work order step (Deliver Biosample to Lab Technician) for the care program enrollee passed into the flow, using the action plan template passed into the flow.</description>
+        <name>Book_Apheresis_Shipment</name>
+        <label>Book Apheresis Shipment</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <actionName>createCareProgramEnrolleeWorkOrderStep</actionName>
+        <actionType>createCareProgramEnrolleeWorkOrderStep</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>workOrderStepLabel</name>
+            <value>
+                <stringValue>Book Apheresis Shipment</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>careProgramEnrolleeID</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>actionPlanTemplateId</name>
+            <value>
+                <stringValue>0PRa5000000JPmUGAW</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>workOrderStepSequenceNumber</name>
+            <value>
+                <numberValue>3.0</numberValue>
+            </value>
+        </inputParameters>
+        <nameSegment>createCareProgramEnrolleeWorkOrderStep</nameSegment>
+    </actionCalls>
+    <actionCalls>
+        <description>Calls an action to create the first work order step (Capture Consent and Place Cell Order) for the care program enrollee passed into the flow, using the action plan template passed into the flow.</description>
+        <name>Capture_Consent_and_Place_Cell_Order</name>
+        <label>Capture Consent and Place Cell Order</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <actionName>createCareProgramEnrolleeWorkOrderStep</actionName>
+        <actionType>createCareProgramEnrolleeWorkOrderStep</actionType>
+        <connector>
+            <targetReference>Schedule_Appointments_and_Confirm_Slots</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>workOrderStepLabel</name>
+            <value>
+                <stringValue>Capture Consent and Place Cell Order</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>careProgramEnrolleeID</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>actionPlanTemplateId</name>
+            <value>
+                <stringValue>0PRa5000000JPmPGAW</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>workOrderStepSequenceNumber</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </inputParameters>
+        <nameSegment>createCareProgramEnrolleeWorkOrderStep</nameSegment>
+    </actionCalls>
+    <actionCalls>
+        <description>Calls an action to create the second work order step (Collection Bag and Labels) for the care program enrollee passed into the flow, using the action plan template passed into the flow.</description>
+        <name>Schedule_Appointments_and_Confirm_Slots</name>
+        <label>Schedule Appointments and Confirm Slots</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <actionName>createCareProgramEnrolleeWorkOrderStep</actionName>
+        <actionType>createCareProgramEnrolleeWorkOrderStep</actionType>
+        <connector>
+            <targetReference>Book_Apheresis_Shipment</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>workOrderStepLabel</name>
+            <value>
+                <stringValue>Schedule Appointments and Confirm Slots</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>careProgramEnrolleeID</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>actionPlanTemplateId</name>
+            <value>
+                <stringValue>0PRa5000000JPmTGAW</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>workOrderStepSequenceNumber</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </inputParameters>
+        <nameSegment>createCareProgramEnrolleeWorkOrderStep</nameSegment>
+    </actionCalls>
+    <apiVersion>58.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>Generate Work Order Steps for Patient Intake {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Generate Work Order Steps for Patient Intake</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <sourceTemplate>healthcloud_ato_flows__Apheresis</sourceTemplate>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Capture_Consent_and_Place_Cell_Order</targetReference>
+        </connector>
+    </start>
+    <status>Obsolete</status>
+    <variables>
+        <description>Stores the ID of the care program enrollee record passed into the flow.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

@@ -65,3 +65,4 @@ package.json
 README.md
 scripts/apex/hello.apex
 scripts/soql/account.soql
+manifest/package-queues.xml

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Dental</name>
+    <queueMembers>
+        <users>
+            <user>srikaralishetty1-xyuy@force.com</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>CareBenefitVerifyRequest__c</sobjectType>
+    </queueSobject>
+</Queue>

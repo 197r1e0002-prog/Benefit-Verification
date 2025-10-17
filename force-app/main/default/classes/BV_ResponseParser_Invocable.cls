@@ -1,33 +1,41 @@
 public with sharing class BV_ResponseParser_Invocable {
 
-    /* What the flow sends in and what it gets back */
+    /* ===== Inputs / Outputs ===== */
 
     public class Inp {
-        @InvocableVariable /* (required=false) */
-        public String responseBody;     // now optional
-        @InvocableVariable
-        public Id cbvrId;
+        @InvocableVariable(required=false)
+        public String responseBody;     // raw response; can be blank
+        @InvocableVariable(required=false)
+        public Id cbvrId;               // optional; for fallbacks
     }
 
     public class Out {
+        // NEW: always provide these so the Flow can show/update status
+        @InvocableVariable public String status;
+        @InvocableVariable public String statusReason;
+
         @InvocableVariable public String externalRequestId;
         @InvocableVariable public String requestId;
         @InvocableVariable public Date   serviceDate;
         @InvocableVariable public String serviceType;
-        @InvocableVariable public String name; // Plan name
+        @InvocableVariable public String name; // plan name
     }
 
-    /* Main invocable method */
+    /* ===== Invocable ===== */
 
     @InvocableMethod(label='Parse Verify JSON'
-                     description='Extracts verify response fields; falls back to CBVR fields if missing.')
+                     description='Extracts verify response fields; defaults status to Acknowledged; falls back to CBVR when missing.')
     public static List<Out> run(List<Inp> reqs){
         List<Out> outs = new List<Out>();
 
         for (Inp r : reqs) {
             Out o = new Out();
 
-            // 1) Try to read fields directly from the JSON (works with httpbin {"json":{...}} or a flat root)
+            // Defaults you asked for (used when the vendor doesn’t send status fields)
+            o.status       = 'Acknowledged';
+            o.statusReason = 'Care Benefit Verification Request successfully sent to Benefits Verification Provider.';
+
+            // 1) Parse from response JSON (supports httpbin {"json":{...}} or direct root)
             if (!String.isBlank(r.responseBody)) {
                 try {
                     Map<String,Object> root = (Map<String,Object>) JSON.deserializeUntyped(r.responseBody);
@@ -36,22 +44,28 @@ public with sharing class BV_ResponseParser_Invocable {
                         : root;
 
                     if (json != null) {
+                        // If the vendor supplied status/ reason, use them (overwrite defaults)
+                        String st = toStr(json.get('status'));
+                        String sr = toStr(json.get('statusReason'));
+                        if (!String.isBlank(st)) o.status = st;
+                        if (!String.isBlank(sr)) o.statusReason = sr;
+
                         o.externalRequestId = toStr(json.get('externalRequestId'));
                         o.requestId         = toStr(json.get('requestId'));
                         o.serviceType       = toStr(json.get('serviceType'));
                         o.name              = toStr(json.get('name'));
 
-                        String sd = toStr(json.get('serviceDate')); // Could be a date or a datetime string
+                        String sd = toStr(json.get('serviceDate')); // date or datetime
                         if (!String.isBlank(sd) && sd.length() >= 10) {
                             try { o.serviceDate = Date.valueOf(sd.substring(0, 10)); } catch (Exception ignore) {}
                         }
                     }
                 } catch (Exception ignore) {
-                    // If JSON parsing fails, we’ll try to fill values from CBVR instead
+                    // ignore bad JSON; we’ll fill from CBVR if possible
                 }
             }
 
-            // 2) For anything still missing, pull values from the CBVR record
+            // 2) Fallbacks from CBVR for any fields still blank (we keep status defaults)
             if (r.cbvrId != null) {
                 try {
                     CareBenefitVerifyRequest__c cbvr = [
@@ -77,8 +91,11 @@ public with sharing class BV_ResponseParser_Invocable {
                     if (isBlank(o.requestId))
                         o.requestId = String.valueOf(cbvr.Id);
 
+                    // Note: we intentionally do NOT overwrite o.status / o.statusReason here.
+                    // They already default to "Acknowledged" + message, or vendor-provided values if present.
+
                 } catch (Exception ignore) {
-                    // Don’t break the flow if we can’t read the CBVR
+                    // do nothing; keep whatever we already set
                 }
             }
 
@@ -87,13 +104,8 @@ public with sharing class BV_ResponseParser_Invocable {
         return outs;
     }
 
-    /* Small helper methods */
+    /* ===== Helpers ===== */
 
     private static String toStr(Object o) { return (o == null) ? null : String.valueOf(o); }
-
-    // Null/empty/whitespace check that’s safe for strings
-    private static Boolean isBlank(String s) {
-        return String.isBlank(s); // true when null, empty, or only spaces
-        // Alternative without String.isBlank: return (s == null || s.trim().length() == 0);
-    }
+    private static Boolean isBlank(String s) { return String.isBlank(s); }
 }

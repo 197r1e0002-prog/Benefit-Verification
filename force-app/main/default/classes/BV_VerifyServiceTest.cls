@@ -2,9 +2,7 @@
 private class BV_VerifyServiceTest {
 
     /* Settings you might change if your org is different */
-    // If your Member Plan → Account field isn’t “MemberId”, put the right API name here (e.g., 'Account__c' or 'Patient__c').
     private static final String PLAN_ACCOUNT_FIELD   = 'MemberId';
-    // Only used if the field describe returns no picklist values (rare).
     private static final String FALLBACK_SERVICETYPE = 'Surgery';
     private static final String FALLBACK_GENDER      = 'Male';
 
@@ -17,6 +15,7 @@ private class BV_VerifyServiceTest {
             lastBody = req.getBody();
             HTTPResponse r = new HTTPResponse();
             r.setStatusCode(200);
+            // You can include more keys here if you want to assert them later
             r.setBody('{"status":"Acknowledged","statusReason":"ok"}');
             return r;
         }
@@ -45,7 +44,6 @@ private class BV_VerifyServiceTest {
         return a;
     }
 
-    // Populate only required & createable fields with safe default values
     private static void fillRequiredFields(SObject sobj, Id fallbackAccountId){
         Schema.DescribeSObjectResult sdesc = sobj.getSObjectType().getDescribe();
         Map<String, Schema.SObjectField> fmap = sdesc.fields.getMap();
@@ -87,7 +85,6 @@ private class BV_VerifyServiceTest {
         }
     }
 
-    // Pick the first non-empty picklist value; if none, use the fallback
     private static String firstPickVal(Schema.DescribeFieldResult d, String fallback){
         for (Schema.PicklistEntry p : d.getPicklistValues()){
             String v = p.getValue();
@@ -96,7 +93,6 @@ private class BV_VerifyServiceTest {
         return fallback;
     }
 
-    // Create a Member Plan on the fly and link it to the patient’s Account
     private static Id makeMemberPlan(Id memberAccountId){
         Schema.SObjectField f = CareBenefitVerifyRequest__c.SObjectType
             .getDescribe().fields.getMap().get('Insurance_Information__c');
@@ -116,7 +112,6 @@ private class BV_VerifyServiceTest {
         return (Id) plan.get('Id');
     }
 
-    // Build a valid CBVR so normal-path tests pass validation
     private static CareBenefitVerifyRequest__c mkCbvr(){
         Account patient = makeAccount('John Doe');
         Id planId = makeMemberPlan(patient.Id);
@@ -139,7 +134,7 @@ private class BV_VerifyServiceTest {
         cbvr.Policy_Number__c           = 'P-123';
         cbvr.Group_Number__c            = 'G-123';
 
-        cbvr.Provider_NPI__c        = '1234567890'; // must be 10 digits to satisfy the validator
+        cbvr.Provider_NPI__c        = '1234567890';
         cbvr.Provider_First_Name__c = 'Alice';
         cbvr.Provider_Last_Name__c  = 'Smith';
 
@@ -150,7 +145,6 @@ private class BV_VerifyServiceTest {
         return cbvr;
     }
 
-    // Set every field the validator checks (extra safety)
     private static void seedValidForVerification(Id cbvrId){
         update new CareBenefitVerifyRequest__c(
             Id                        = cbvrId,
@@ -235,7 +229,7 @@ private class BV_VerifyServiceTest {
         System.assert(insurance.containsKey('providerName'));
         System.assert(insurance.containsKey('policyNumber'));
         System.assert(insurance.containsKey('groupNumber'));
-        System.assert(insurance.containsKey('subscriberId')); // may be null; key must exist
+        System.assert(insurance.containsKey('subscriberId'));
 
         System.assert(provider.containsKey('npi'));
         System.assert(provider.containsKey('firstName'));
@@ -243,7 +237,7 @@ private class BV_VerifyServiceTest {
     }
 
     @IsTest
-    static void http_500_sets_error_fields(){
+    static void http_500_sets_callout_failed_and_logs_body(){
         CareBenefitVerifyRequest__c cbvr = mkCbvr();
         seedValidForVerification(cbvr.Id);
 
@@ -254,11 +248,14 @@ private class BV_VerifyServiceTest {
         Test.stopTest();
 
         CareBenefitVerifyRequest__c got = [
-            SELECT Status__c, Status_Reason__c
+            SELECT Status__c, Status_Reason__c, Last_Error__c
             FROM CareBenefitVerifyRequest__c WHERE Id = :cbvr.Id
         ];
-        System.assertEquals('Error',                 got.Status__c);
-        System.assertEquals('Internal Server Error', got.Status_Reason__c);
+        System.assertEquals('Error',          got.Status__c);
+        System.assertEquals('Callout failed', got.Status_Reason__c);
+        System.assert(!String.isBlank(got.Last_Error__c) &&
+                      got.Last_Error__c.contains('Internal Server Error'),
+                      'Last_Error__c should contain server message');
     }
 
     @IsTest
@@ -280,7 +277,6 @@ private class BV_VerifyServiceTest {
         System.assertEquals('Callout failed', got.Status_Reason__c);
     }
 
-    // Validation test: callout should be blocked and errors should be set
     @IsTest
     static void validation_blocks_callout_and_sets_error(){
         CareBenefitVerifyRequest__c cbvr = mkCbvr();
@@ -288,7 +284,7 @@ private class BV_VerifyServiceTest {
         // Intentionally make the NPI invalid (non-digits) to trigger the guard
         update new CareBenefitVerifyRequest__c(
             Id = cbvr.Id,
-            Provider_NPI__c = 'ABC' // not 10 digits
+            Provider_NPI__c = 'ABC'
         );
 
         lastBody = null;
